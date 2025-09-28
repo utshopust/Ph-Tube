@@ -33,18 +33,29 @@ function loadVideos() {
     .then((res) => res.json())
     .then((data) => displayVideos(data.videos));
 }
+// load categoryWise Videos
+
+const loadCategoryVideos = (id) => {
+  const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
+  console.log(url);
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => displayVideos(data.category));
+};
 
 // build displayVideos by using arrow function
 
 const displayVideos = (videos) => {
   const videoContainer = document.getElementById("video-container");
+  // remove other videos when click on other category
+  videoContainer.innerHTML= "";
   for (let video of videos) {
     console.log(video);
     const videoCard = document.createElement("div");
     videoCard.innerHTML = `
      <div class="card bg-base-100">
         <figure class="relative">
-          <img class="w-full h-[150px] object-cover" src="${video.thumbnail}" alt="Shoes" />
+          <img class="w-full h-[250px] object-cover" src="${video.thumbnail}" alt="Shoes" />
           <span
             class="absolute bottom-2 right-2 text-sm rounded text-white bg-black px-2"
             >3hrs 56 min ago</span
@@ -100,7 +111,7 @@ function displayCategories(categories) {
     // Create Element
     const categoryDiv = document.createElement("div");
     categoryDiv.innerHTML = `
-    <button class="btn btn-sm hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
+    <button onclick="loadCategoryVideos(${cat.category_id})" class="btn btn-sm hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
     `;
 
     // append the Element
@@ -109,6 +120,3 @@ function displayCategories(categories) {
 }
 // call the loadCategories function
 loadCategories();
-
-// call the loadVideos function
-loadVideos();
