@@ -12,6 +12,12 @@
       type="text/css"
     />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+      .active{
+        background:#FF1F3D ;
+        color: white;
+      }
+    </style>
   </head>
   <body>
     <header>
@@ -19,7 +25,12 @@
         class="w-11/12 mx-auto flex justify-between border-b-2 py-5 border-[#17171720]"
       >
         <div class="logo">
-          <img class="w-[120px]" src="assets/Logo.png" alt="" />
+          <img
+            onclick="loadVideos()"
+            class="w-[120px] hover:cursor-pointer"
+            src="assets/Logo.png"
+            alt="PH-TUBE LOGO"
+          />
         </div>
         <div class="sort">
           <button class="btn">Sort By View</button>
@@ -32,17 +43,29 @@
     <!-- Dynamic navbar start -->
     <nav id="category-container" class="flex justify-center py-5 gap-5">
       <div>
-        <button onclick="loadVideos()" class="btn btn-sm bg-[#FF1F3D] text-white">All</button>
+        <button
+          onclick="loadVideos()"
+          class="btn btn-sm bg-[#FF1F3D] text-white"
+        >
+          All
+        </button>
       </div>
     </nav>
     <!-- Dynamic navbar End -->
 
     <!-- Videos Container Start -->
     <section
-      class="w-11/12 mx-auto grid grid-cols-4 gap-5"
+      class="w-11/12 mx-auto grid grid-cols-4 gap-5 hover:cursor-pointer"
       id="video-container"
     >
-     
+      <div
+        class="col-span-full flex flex-col justify-center items-center text-center py-20"
+      >
+        <img class="w-[120px]" src="assets/Icon.png" alt="Opps icon" />
+        <h2 class="text-2xl font-bold">
+          Oops!! Sorry, There is no content here
+        </h2>
+      </div>
     </section>
     <!-- Videos Container End -->
 

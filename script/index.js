@@ -40,7 +40,11 @@ const loadCategoryVideos = (id) => {
   console.log(url);
   fetch(url)
     .then((res) => res.json())
-    .then((data) => displayVideos(data.category));
+    .then((data) => {
+      const clickButton = document.getElementById(`btn-${id}`);
+      clickButton.classList.add("active");
+      displayVideos(data.category)
+    });
 };
 
 // build displayVideos by using arrow function
@@ -48,7 +52,17 @@ const loadCategoryVideos = (id) => {
 const displayVideos = (videos) => {
   const videoContainer = document.getElementById("video-container");
   // remove other videos when click on other category
-  videoContainer.innerHTML= "";
+  videoContainer.innerHTML = "";
+
+  if (videos.length === 0) {
+    videoContainer.innerHTML = `
+    <div class="col-span-full flex flex-col justify-center items-center text-center py-20">
+        <img class="w-[120px]" src="assets/Icon.png" alt="Opps icon" />
+        <h2 class="text-2xl font-bold">Oops!! Sorry, There is no content here</h2>
+      </div>
+    `;
+    return;
+  }
   for (let video of videos) {
     console.log(video);
     const videoCard = document.createElement("div");
@@ -106,12 +120,12 @@ function displayCategories(categories) {
 
   // loop operation on Array of object
   for (let cat of categories) {
-    console.log("cat are :", cat);
+    // console.log("cat are :", cat);
 
     // Create Element
     const categoryDiv = document.createElement("div");
     categoryDiv.innerHTML = `
-    <button onclick="loadCategoryVideos(${cat.category_id})" class="btn btn-sm hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
+    <button id="btn-${cat.category_id}" onclick="loadCategoryVideos(${cat.category_id})" class="btn btn-sm hover:bg-[#FF1F3D] hover:text-white">${cat.category}</button>
     `;
 
     // append the Element
