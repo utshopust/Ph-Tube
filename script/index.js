@@ -1,6 +1,6 @@
-function removeActiveClass(){
+function removeActiveClass() {
   const activeButton = document.getElementsByClassName("active");
-  for(let btn of activeButton){
+  for (let btn of activeButton) {
     btn.classList.remove("active");
   }
 }
@@ -41,22 +41,57 @@ function loadVideos() {
     .then((data) => {
       removeActiveClass();
       document.getElementById("btn-all").classList.add("active");
-      displayVideos(data.videos)
+      displayVideos(data.videos);
     });
 }
 // load categoryWise Videos
 
 const loadCategoryVideos = (id) => {
   const url = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
-  console.log(url);
+  // console.log(url);
   fetch(url)
     .then((res) => res.json())
     .then((data) => {
-      removeActiveClass()
+      removeActiveClass();
       const clickButton = document.getElementById(`btn-${id}`);
       clickButton.classList.add("active");
-      displayVideos(data.category)
+      displayVideos(data.category);
     });
+};
+
+// load Video Details function
+
+const loadVideoDetails = (videoId) => {
+  console.log(videoId);
+  const url = `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`;
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => {
+      displayVideoDetails(data.video);
+    });
+};
+// display video details
+const displayVideoDetails = (video) => {
+  console.log(video);
+  document.getElementById("video_details").showModal();
+  const detailsContainer = document.getElementById("details-container");
+
+  detailsContainer.innerHTML = `
+<div class="card bg-base-100 image-full shadow-sm">
+  <figure>
+    <img
+      src="${video.thumbnail}"
+      alt="Shoes" />
+  </figure>
+  <div class="card-body">
+    <h2 class="card-title">${video.title}</h2>
+    <p>${video.description}</p>
+    <div class="card-actions justify-end">
+      
+    </div>
+  </div>
+</div>
+`;
 };
 
 // build displayVideos by using arrow function
@@ -76,7 +111,7 @@ const displayVideos = (videos) => {
     return;
   }
   for (let video of videos) {
-    console.log(video);
+    // console.log(video);
     const videoCard = document.createElement("div");
     videoCard.innerHTML = `
      <div class="card bg-base-100">
@@ -113,6 +148,7 @@ const displayVideos = (videos) => {
             <p class="text-sm text-gray-400">${video.others.views}</p>
           </div>
         </div>
+        <button onclick="loadVideoDetails('${video.video_id}')" class="btn btn-block">Show Details</button>
       </div>
     `;
     // Append
