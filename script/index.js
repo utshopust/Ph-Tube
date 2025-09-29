@@ -35,8 +35,8 @@ function loadCategories() {
 //     "description": "Ethan Clark's 'Colors of the Wind' is a vibrant musical exploration that captivates listeners with its rich, expressive melodies and uplifting rhythm. With 233K views, this song is a celebration of nature's beauty and human connection, offering a soothing and enriching experience for fans of heartfelt, nature-inspired music."
 // }
 
-function loadVideos() {
-  fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+function loadVideos(searchText = "") {
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then((res) => res.json())
     .then((data) => {
       removeActiveClass();
@@ -116,7 +116,9 @@ const displayVideos = (videos) => {
     videoCard.innerHTML = `
      <div class="card bg-base-100">
         <figure class="relative">
-          <img class="w-full h-[250px] object-cover" src="${video.thumbnail}" alt="Shoes" />
+          <img class="w-full h-[250px] object-cover" src="${
+            video.thumbnail
+          }" alt="Shoes" />
           <span
             class="absolute bottom-2 right-2 text-sm rounded text-white bg-black px-2"
             >3hrs 56 min ago</span
@@ -140,16 +142,22 @@ const displayVideos = (videos) => {
             <h2 class="text-sm font-semibold">Midnight Serenade</h2>
             <p class="text-sm text-gray-400 flex gap-1">
               ${video.authors[0].profile_name}
-              ${video.authors[0].verified==true ? `<img class="w-5 h-5"
+              ${
+                video.authors[0].verified == true
+                  ? `<img class="w-5 h-5"
                 src="https://img.icons8.com/?size=96&id=98A4yZTt9abw&format=png"
                 alt=""
-              />` : ``}
+              />`
+                  : ``
+              }
               
             </p>
             <p class="text-sm text-gray-400">${video.others.views}</p>
           </div>
         </div>
-        <button onclick="loadVideoDetails('${video.video_id}')" class="btn btn-block">Show Details</button>
+        <button onclick="loadVideoDetails('${
+          video.video_id
+        }')" class="btn btn-block">Show Details</button>
       </div>
     `;
     // Append
@@ -181,5 +189,12 @@ function displayCategories(categories) {
     categoryContainer.append(categoryDiv);
   }
 }
+// search by title
+document.getElementById("search-input").addEventListener("keyup", (event) => {
+  const input = event.target.value;
+  // milestone 5 e kore asa 
+  loadVideos(input);
+});
+
 // call the loadCategories function
 loadCategories();
